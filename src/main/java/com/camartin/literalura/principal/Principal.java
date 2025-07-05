@@ -169,8 +169,13 @@ public class Principal {
         ano = teclado.nextInt();
 
         List<Autor> listadoAutores = repositorio.buscarAutoresVivos(ano);
-        listadoAutores.stream()
-                .forEach(System.out::println);
+
+        if (listadoAutores.size()==0) {
+            System.out.println("BUSQUEDA SIN RESULTADOS");
+        } else {
+            listadoAutores.stream()
+                    .forEach(System.out::println);
+        }
     }
 
     private void listarLibrosPorIdioma() {
@@ -181,8 +186,13 @@ public class Principal {
         idioma = teclado.nextLine();
 
         List<Libro> listadoLibros = repositorio.buscarLibrosPorIdioma(idioma);
-        listadoLibros.stream()
-                .forEach(System.out::println);
+
+        if (listadoLibros.size()==0) {
+            System.out.println("BUSQUEDA SIN RESULTADOS");
+        } else {
+            listadoLibros.stream()
+                    .forEach(System.out::println);
+        }
     }
 
 }
