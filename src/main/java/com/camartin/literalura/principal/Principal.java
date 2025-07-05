@@ -41,6 +41,8 @@ public class Principal {
                 3 - Listar autores registrados
                 4 - Listar autores vivos en un determinado año
                 5 - Listar libros por idioma
+                6 - Top 10 descargas
+                7 - Buscar autor por nombre
                               
                 0 - Salir
                 """;
@@ -64,6 +66,12 @@ public class Principal {
                     break;
                 case 5:
                     listarLibrosPorIdioma();
+                    break;
+                case 6:
+                    topDiezDescargas();
+                    break;
+                case 7:
+                    buscarAutorPorNombre();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -163,6 +171,8 @@ public class Principal {
 
     private void listarAutoresVivos() {
 
+        System.out.println("\nAUTORES VIVOS POR AÑO\n");
+
         int ano;
 
         System.out.println("Ingrese año de búsqueda:");
@@ -180,6 +190,8 @@ public class Principal {
 
     private void listarLibrosPorIdioma() {
 
+        System.out.println("\nBUSCAR LIBROS POR IDIOMA\n");
+
         String idioma;
 
         System.out.println("Ingrese idioma de búsqueda:");
@@ -191,6 +203,31 @@ public class Principal {
             System.out.println("BUSQUEDA SIN RESULTADOS");
         } else {
             listadoLibros.stream()
+                    .forEach(System.out::println);
+        }
+    }
+
+    private void topDiezDescargas() {
+
+        System.out.println("\nTOP 10 DESCARGAS (LIBROS GUARDADOS EN DATABASE)\n");
+        List<Libro> listadoLibros = repositorio.top10Descargas();
+        listadoLibros.stream()
+                .forEach(System.out::println);
+    }
+
+    private void buscarAutorPorNombre() {
+
+        String clave;
+
+        System.out.println("Ingrese clave de búsqueda:");
+        clave = teclado.nextLine();
+
+        List<Autor> listadoAutores = repositorio.buscarAutorPorNombre(clave);
+
+        if (listadoAutores.size()==0) {
+            System.out.println("BUSQUEDA SIN RESULTADOS");
+        } else {
+            listadoAutores.stream()
                     .forEach(System.out::println);
         }
     }

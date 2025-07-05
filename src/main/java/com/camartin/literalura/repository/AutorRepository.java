@@ -25,4 +25,10 @@ public interface AutorRepository extends JpaRepository<Autor, Long> {
     @Query("SELECT l FROM Libro l WHERE l.titulo=:titulo")
     Libro libroExistente(String titulo);
 
+    @Query("SELECT l FROM Libro l ORDER BY l.descargas DESC LIMIT 10")
+    List<Libro> top10Descargas();
+
+    @Query("SELECT a FROM Autor a WHERE a.nombre ILIKE %:clave%")
+    List<Autor> buscarAutorPorNombre(String clave);
+
 }
