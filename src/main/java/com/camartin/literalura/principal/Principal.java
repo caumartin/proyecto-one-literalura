@@ -111,42 +111,46 @@ public class Principal {
             String libroEncontrado = resultado.get(0).titulo();
             String autorEncontrado = resultado.get(0).autores().get(0).nombre();
 
-            System.out.println("Libro encontrado: " + libroEncontrado);
-            System.out.println("Autor: " + autorEncontrado);
+            if (libroEncontrado.length()<255 && autorEncontrado.length()<255) {
 
-            try {
-                autorExiste = repositorio.autorExistente(autorEncontrado);
-            } catch (Exception e) {
-                System.out.println("Error leyendo Postgres");
-            }
+                System.out.println("Libro encontrado: " + libroEncontrado);
+                System.out.println("Autor: " + autorEncontrado);
 
-            if (autorExiste==null) {
-                //System.out.println("Autor no existe en DB, agregar libro y autor");
-
-                libro = new Libro(resultado.get(0));
-                autor = new Autor(resultado.get(0).autores().get(0));
-                autor.setLibros(libro);
-                repositorio.save(autor);
-
-            } else {
-                System.out.println("Autor ya existe en DB");
                 try {
-                    libroExiste = repositorio.libroExistente(libroEncontrado);
+                    autorExiste = repositorio.autorExistente(autorEncontrado);
                 } catch (Exception e) {
                     System.out.println("Error leyendo Postgres");
                 }
 
-                if (libroExiste==null) {
-                    System.out.println("Autor ya existe en DB, pero ese libro no, agregar");
+                if (autorExiste == null) {
+                    System.out.println("Autor no existe en DB, se agregan libro y autor");
+
                     libro = new Libro(resultado.get(0));
-                    autorExiste.setLibros(libro);
-                    repositorio.save(autorExiste);
+                    autor = new Autor(resultado.get(0).autores().get(0));
+                    autor.setLibros(libro);
+                    repositorio.save(autor);
 
                 } else {
-                    System.out.println("Ese libro ya existe en DataBase");
-                }
-            }
+                    //System.out.println("Autor ya existe en DB");
+                    try {
+                        libroExiste = repositorio.libroExistente(libroEncontrado);
+                    } catch (Exception e) {
+                        System.out.println("Error leyendo Postgres");
+                    }
 
+                    if (libroExiste == null) {
+                        System.out.println("Autor ya existe en DB, pero ese libro no, se agrega");
+                        libro = new Libro(resultado.get(0));
+                        autorExiste.setLibros(libro);
+                        repositorio.save(autorExiste);
+
+                    } else {
+                        System.out.println("Ese libro ya existe en DataBase");
+                    }
+                }
+            } else {
+                System.out.println("Datos fuera de rango");
+            }
         } else {
             System.out.println("No se encontraron libros con esa clave de búsqueda");
         }
